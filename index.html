@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
- <title>Hello World DApp</title>
+ <title>6조 Dapp 프론트엔드</title>
  <link href='https://fonts.googleapis.com/css?family=Open Sans:400,700' rel='stylesheet' type='text/css'>
  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 </head>
 <body class="container">
- <h1>A Simple Hello World Voting Application</h1>
+ <h1>Dapp 프로토타입</h1>
  <div class="table-responsive">
   <table class="table table-bordered">
    <thead>
     <tr>
-     <th>Candidate</th>
-     <th>Votes</th>
+     <th>후보자 목록</th>
+     <th>득표</th>
     </tr>
    </thead>
    <tbody>
     <tr>
-     <td>Rama</td>
+     <td>후보자1</td>
      <td id="candidate-1"></td>
     </tr>
     <tr>
-     <td>Nick</td>
+     <td>후보자2</td>
      <td id="candidate-2"></td>
     </tr>
     <tr>
-     <td>Jose</td>
+     <td>후보자3</td>
      <td id="candidate-3"></td>
     </tr>
    </tbody>
   </table>
  </div>
  <input type="text" id="candidate" />
- <a href="#" onclick="voteForCandidate()" class="btn btn-primary">Vote</a>
+ <a href="#" onclick="voteForCandidate()" class="btn btn-primary">투표하기</a>
 </body>
 <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.37/dist/web3.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
