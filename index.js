@@ -1,3 +1,5 @@
+//프로토타입 수정전
+
 web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
 var account;
 web3.eth.getAccounts().then((f) => {
