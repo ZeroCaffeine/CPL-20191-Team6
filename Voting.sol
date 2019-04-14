@@ -1,36 +1,38 @@
+// ìŠ¤ë§ˆíŠ¸ ì»¨íŠ¸ë™íŠ¸ 
+
 pragma solidity >=0.4.0 <0.6.0;
 
 contract Voting {
   
-  // ÈÄº¸ÀÚ ¸í´Ü
+  // í›„ë³´ì ëª…ë‹¨
   bytes32[] public candidateList;
-  // ÈÄº¸ÀÚ ¸í´Ü°ú ÅõÇ¥ ¼ö Á¤º¸¸¦ ¸ÅÇÎ
+  // í›„ë³´ì ëª…ë‹¨ê³¼ íˆ¬í‘œ ìˆ˜ ì •ë³´ë¥¼ ë§¤í•‘
   mapping (bytes32 => uint8) public votesReceived;
 
-  // ÈÄº¸ÀÚ µî·Ï ÇÔ¼ö
-  // »ı¼ºÀÚ°¡ ÇÔ¼ö¸¦ ´ë½ÅÇÑ´Ù.
+  // í›„ë³´ì ë“±ë¡ í•¨ìˆ˜
+  // ìƒì„±ìê°€ í•¨ìˆ˜ë¥¼ ëŒ€ì‹ í•œë‹¤.
   constructor(bytes32[] memory candidateNames) public {
     candidateList = candidateNames;
   }
   
-  // ÅõÇ¥ ±â´É ÇÔ¼ö
+  // íˆ¬í‘œ ê¸°ëŠ¥ í•¨ìˆ˜
   function voteForCandidate(bytes32 candidate) public {
-    // Á¤»óÀûÀÎ ÈÄº¸ÀÚ ÀÔ·ÂÀ» °Ë»ç 
+    // ì •ìƒì ì¸ í›„ë³´ì ì…ë ¥ì„ ê²€ì‚¬ 
     require(validCandidate(candidate));
-    // ÈÄº¸ÀÚ Á¤º¸¿¡ ÅõÇ¥ ¼ö¸¦ 1 ¿Ã¸°´Ù.
+    // í›„ë³´ì ì •ë³´ì— íˆ¬í‘œ ìˆ˜ë¥¼ 1 ì˜¬ë¦°ë‹¤.
     votesReceived[candidate] += 1;
   }
   
-  // ÈÄº¸ÀÚ ÅõÇ¥ ¼ö »êÃâ ÇÔ¼ö 
+  // í›„ë³´ì íˆ¬í‘œ ìˆ˜ ì‚°ì¶œ í•¨ìˆ˜ 
   function totalVotesFor(bytes32 candidate) view public returns(uint8) {
-    // Á¤»óÀûÀÎ ÈÄº¸ÀÚ ÀÔ·ÂÀ» °Ë»ç 
+    // ì •ìƒì ì¸ í›„ë³´ì ì…ë ¥ì„ ê²€ì‚¬ 
     require(validCandidate(candidate));
-    // ÅõÇ¥ ¼ö ¹İÈ¯
+    // íˆ¬í‘œ ìˆ˜ ë°˜í™˜
     return votesReceived[candidate];
   }
   
-  // ÈÄº¸ÀÚ ¿©ºÎ °Ë»ç ÇÔ¼ö
-  // Á¤»óÀûÀÎ ÈÄº¸ÀÚ(ÇöÀç ÀÌ¸§) Á¤º¸¸¦ ¸í´Ü°ú ´ëÁ¶ÇÑ´Ù.
+  // í›„ë³´ì ì—¬ë¶€ ê²€ì‚¬ í•¨ìˆ˜
+  // ì •ìƒì ì¸ í›„ë³´ì(í˜„ì¬ ì´ë¦„) ì •ë³´ë¥¼ ëª…ë‹¨ê³¼ ëŒ€ì¡°í•œë‹¤.
   function validCandidate(bytes32 candidate) view public returns (bool) {
     for(uint i=0; i < candidateList.length; i++) {
       if (candidateList[i] == candidate) {
