@@ -1,0 +1,238 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>연습용 html 제작</title>
+		<meta charset="utf-8" /><!--인코딩을 알려주는 태그, 안쓰면 한글이 깨질수도 있다.-->
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" /><!--애플이 만든 자사의 모바일 브라우저 뷰포트 크기 조절을 위해 만듬-->
+		<link rel="stylesheet" href="assets/css/main.css" /><!--css는 스타일을 미리 지정해놓고 연동만 시켜 스타일을 적용시키는 것-->
+		<style>
+			table,th,td{
+				border: 3px solid black;
+				}
+		</style>
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<div id="header">
+
+				<div class="top">
+
+					<!-- Logo ,좌측에 떠있는 jane doe-->
+						<div id="logo">
+							<span class="image avatar48"><img src="images/avatar.jpg" alt="" /></span><!--span은 공간분할-->
+							<h1 id="title">이더리움</h1>
+							<p>블록체인 기반 투표앱</p><!--본문글자 태그-->
+						</div>
+
+					<!-- Nav 좌측목록-->
+						<nav id="nav">
+							<ul>
+								<li><a href="#top" id="top-link"><span class="icon fa-home">투표</span></a></li><!--a 명령어의 href top으로 바로 이동하도록-->
+								<li><a href="#portfolio" id="portfolio-link"><span class="icon fa-th">투표생성</span></a></li>
+								<li><a href="#about" id="about-link"><span class="icon fa-user">About Me</span></a></li>
+								<li><a href="#contact" id="contact-link"><span class="icon fa-envelope">Contact</span></a></li>
+							</ul>
+						</nav>
+
+				</div>
+
+			</div>
+
+		<!-- Main -->
+			<div id="main">
+
+				<!-- Intro -->
+					<section id="top" class="one dark cover">
+						<div class="container">
+
+							<header>
+								<h2 class="alt">이더리움 기반 투표웹앱 개발.</h2>
+								<p>대통령 선거</p>
+							</header>
+
+							<footer>
+								<a href="#portfolio" class="button scrolly">바로가기</a>
+							</footer>
+						</div>
+					</br>
+				</br>
+			</br>
+		</br>
+						<div class="col-6 col-12-mobile"><!--높이-->
+							<div class="col-sm-2"> <!--왠지 폭을 적용하는 듯함-->
+								<h2>Candidates</h2>
+								<div class="table-responsive">
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>Candidate</th>
+												<th>Votes</th>
+											</tr>
+										</thead>
+										<tbody id="candidate-rows"></tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="col-12"><!--높이-->
+								<h2>Tokens</h2>
+								<div class="table-responsive">
+									<table class="table table-bordered">
+										<tr>
+											<th>Tokens Info</th>
+											<th>Value</th>
+										</tr>
+										<tr>
+											<td>Tokens For Sale</td>
+											<td id="tokens-total"></td>
+										</tr>
+										<tr>
+											<td>Tokens Sold</td>
+											<td id="tokens-sold"></td>
+										</tr>
+										<tr>
+											<td>Price Per Token</td>
+											<td id="token-cost"></td>
+										</tr>
+										<tr>
+											<td>Balance in the contract</td>
+											<td id="contract-balance"></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+					</section>
+
+				<!-- Portfolio -->
+					<section id="portfolio" class="two">
+						<div class="container">
+
+							<header>
+								<h2>선거</h2>
+							</header>
+
+							<p>대통령 후보</p>
+
+							<div class="row">
+								<div class="col-4 col-12-mobile">
+									<article class="item">
+										<a href="#" class="image fit"><img src="images/pic02.jpg" alt="" /></a>
+										<header>
+											<h3>Ipsum Feugiat</h3>
+										</header>
+									</article>
+									<article class="item">
+										<a href="#" class="image fit"><img src="images/pic03.jpg" alt="" /></a>
+										<header>
+											<h3>Rhoncus Semper</h3>
+										</header>
+									</article>
+								</div>
+								<div class="col-4 col-12-mobile">
+									<article class="item">
+										<a href="#" class="image fit"><img src="images/pic04.jpg" alt="" /></a>
+										<header>
+											<h3>Magna Nullam</h3>
+										</header>
+									</article>
+									<article class="item">
+										<a href="#" class="image fit"><img src="images/pic05.jpg" alt="" /></a>
+										<header>
+											<h3>Natoque Vitae</h3>
+										</header>
+									</article>
+								</div>
+								<div class="col-4 col-12-mobile">
+									<article class="item">
+										<a href="#" class="image fit"><img src="images/pic06.jpg" alt="" /></a>
+										<header>
+											<h3>Dolor Penatibus</h3>
+										</header>
+									</article>
+									<article class="item">
+										<a href="#" class="image fit"><img src="images/pic07.jpg" alt="" /></a>
+										<header>
+											<h3>Orci Convallis</h3>
+										</header>
+									</article>
+								</div>
+							</div>
+
+						</div>
+					</section>
+
+				<!-- About Me -->
+					<section id="about" class="three">
+						<div class="container">
+
+							<header>
+								<h2>About Me</h2>
+							</header>
+
+							<a href="#" class="image featured"><img src="images/pic08.jpg" alt="" /></a>
+
+							<p>Tincidunt eu elit diam magnis pretium accumsan etiam id urna. Ridiculus
+							ultricies curae quis et rhoncus velit. Lobortis elementum aliquet nec vitae
+							laoreet eget cubilia quam non etiam odio tincidunt montes. Elementum sem
+							parturient nulla quam placerat viverra mauris non cum elit tempus ullamcorper
+							dolor. Libero rutrum ut lacinia donec curae mus vel quisque sociis nec
+							ornare iaculis.</p>
+
+						</div>
+					</section>
+
+				<!-- Contact -->
+					<section id="contact" class="four">
+						<div class="container">
+
+							<header>
+								<h2>Contact</h2>
+							</header>
+
+							<p>Elementum sem parturient nulla quam placerat viverra
+							mauris non cum elit tempus ullamcorper dolor. Libero rutrum ut lacinia
+							donec curae mus. Eleifend id porttitor ac ultricies lobortis sem nunc
+							orci ridiculus faucibus a consectetur. Porttitor curae mauris urna mi dolor.</p>
+
+							<form method="post" action="#">
+								<div class="row">
+									<div class="col-6 col-12-mobile"><input type="text" name="name" placeholder="Name" /></div>
+									<div class="col-6 col-12-mobile"><input type="text" name="email" placeholder="Email" /></div>
+									<div class="col-12">
+										<textarea name="message" placeholder="Message"></textarea>
+									</div>
+									<div class="col-12">
+										<input type="submit" value="Send Message" />
+									</div>
+								</div>
+							</form>
+
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Footer -->
+			<div id="footer">
+
+				<!-- Copyright -->
+					<ul class="copyright">
+						<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+			<script src="index.js"></script>
+
+	</body>
+</html>
