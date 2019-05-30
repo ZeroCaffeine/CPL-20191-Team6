@@ -56,11 +56,13 @@ const App = {
   },
 
  loadCandidatesAndVotes: async function() {
-  // The line below loads the totalVotesFor method from the list of methods 
-// returned by this.voting.methods
-  const { totalVotesFor } = this.voting.methods;
+  const { totalVotesFor, getRoomName } = this.voting.methods;
+
+  let roomName = await getRoomName(1).call();
+  $("#roomName").html(this.web3.utils.hexToAscii(roomName));
+  //$("#roomName").html(roomName);
+
   let candidateNames = Object.keys(candidates);
-  let roomName = this.web3.utils.asciiToHex("Room1");
   for (var i = 0; i < candidateNames.length; i++) {
    let name = candidateNames[i];
    

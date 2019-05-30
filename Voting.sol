@@ -2,10 +2,7 @@ pragma solidity >=0.4.0 <0.6.0;
 // This line says the code will compile with version greater than 0.4 and less than 0.6
 
 contract Voting {
-  // constructor to initialize candidates
-  // vote for candidates
-  // get count of votes for each candidates
-  
+
   struct voteRoom {
     bytes32 roomName;
     bytes32[] candidateList;
@@ -14,12 +11,13 @@ contract Voting {
     bool exists;
   }
 
-  uint8 roomCount = 0;
+  uint8 roomCount = 1;
   mapping (uint8 => voteRoom) voteRoomList;
 
   function addVoteRoom(bytes32 _roomName, bytes32[] memory _candidateList, bytes32 _voteDate) public {
-        uint8 index = ++roomCount;
-		
+        uint8 index = roomCount;
+		roomCount = roomCount + 1;
+
 		voteRoomList[index].roomName = _roomName;
         voteRoomList[index].candidateList = _candidateList;
         for (uint i = 0; i < _candidateList.length; i++) {
@@ -27,6 +25,10 @@ contract Voting {
         }
 		voteRoomList[index].voteDate = _voteDate;
         voteRoomList[index].exists = true;
+  }
+
+  function getRoomName(uint8 roomNumber) view public returns(bytes32) {
+	return voteRoomList[roomNumber].roomName;
   }
 
   function voteForCandidate(uint8 roomNumber, bytes32 candidate) public {
