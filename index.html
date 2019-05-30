@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
  <title>Hello World DApp</title>
@@ -6,8 +6,8 @@
  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 </head>
 <body class="container">
- <h2 id="roomName"></h2>
- <h1 id="voteDate"></h1>
+ <h3 id="roomName">Room name : </h3>
+ <h4 id="voteDate">Vote Date : </h4>
  <div class="table-responsive">
   <table class="table table-bordered">
    <thead>
@@ -32,14 +32,12 @@
    </tbody>
   </table>
  </div>
-  <a href="#" onclick="App.createVoteRoom()" class="btn btn-primary">Create</a>
-  <a href="#" onclick="App.loadCandidatesAndVotes()" class="btn btn-primary">Refresh</a>
-  <br>
-  <hr>
  <input type="text" id="candidate" />
  <a href="#" onclick="App.voteForCandidate()" class="btn btn-primary">Vote</a>
- <h6 id="msg"></h6>
-</body>
+ <h6 id="test1">State 1 : </h6>
+ <h6 id="test2">State 2 : </h6>
+ <h6 id="test3">State 3 : </h6>
+  </body>
 <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.37/dist/web3.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
 <script src="./index.js"></script>

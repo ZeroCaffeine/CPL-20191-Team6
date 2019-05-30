@@ -2,7 +2,7 @@ import Web3 from "web3";
 import votingArtifact from "../../build/contracts/Voting.json";
 
 let candidates = {"Rama": "totalVotes-1", "Nick": "totalVotes-2", "Jose": "totalVotes-3"}
-let roomNumber = 1;
+let roomNumber = 2;
 
 const App = {
  web3: null,
@@ -16,82 +16,85 @@ const App = {
    // get contract instance
    const networkId = await web3.eth.net.getId();
    const deployedNetwork = votingArtifact.networks[networkId];
+
+   $("#test").html("State : testing now...");
    this.voting = new web3.eth.Contract(
     votingArtifact.abi,
     deployedNetwork.address,
    );
+   $("#test").html("State : Instance work!");
 
    // get accounts
    const accounts = await web3.eth.getAccounts();
    this.account = accounts[0];
    
-   //this.test();
-   //this.createVoteRoom();
-   //this.loadCandidatesAndVotes();
+   $("#test").html("State : creation start...");
+   this.createVoteRoom();
+   $("#test").html("State : load room data...");
+   this.loadRoomData();
+   $("#test").html("State : load candidates and votes...");
+   this.loadCandidatesAndVotes();
+
   } catch (error) {
    console.error("Could not connect to contract or chain.");
   }
  },
 
- test: async function() {
-   let candidateNames = Object.keys(candidates);
-  for (var i = 0; i < candidateNames.length; i++) {
-   let name = candidateNames[i];
-   var count = i;
-   $("#" + candidates[name]).html(count);
-  }
- },
-
  createVoteRoom: async function() {
    const { addVoteRoom } = this.voting.methods;
-   let candidateNames = Object.keys(candidates);
-   let candidateList = new Array();
+   $("#test1").html("State 1 : createVoteRoom start.");
+   var candidateNames = ["Finn", "Jake", "Bubblegum"];
+   var candidateList = new Array();
    for (var i = 0; i < candidateNames.length; i++) {
      candidateList[i] = this.web3.utils.asciiToHex(candidateNames[i]);
    }
 
    let roomName = this.web3.utils.asciiToHex("Room1");  
-   var voteDate = this.web3.utils.asciiToHex("0530");
-   await addVoteRoom(roomName,candidateList,voteDate).send({gas: 240000, from: this.account});
+   let voteDate = this.web3.utils.asciiToHex("0530");
+   //var check = await addVoteRoom(roomName,candidateList,voteDate).call();
+   var check = await addVoteRoom(roomName,candidateList,voteDate).send({gas: 320000, from: this.account});
+   $("#test1").html("State 1 : createVoteRoom finished");   
   },
 
+ loadRoomData: async function() {
+   const { getRoomName, getVoteDate } = this.voting.methods;
+   
+   var roomName = await getRoomName(roomNumber).call();
+   var voteDate = await getVoteDate(roomNumber).call();
+ 
+   $("#roomName").html(this.web3.utils.hexToAscii(roomName));
+   $("#voteDate").html(this.web3.utils.hexToAscii(voteDate));
+ },
+
  loadCandidatesAndVotes: async function() {
-  const { totalVotesFor, getRoomName, getCandidateList, getVoteDate } = this.voting.methods;
+   const { getCandidateList, totalVotesFor } = this.voting.methods;
+   $("#test2").html("State 2 : loadCandidatesAndVotes start.");
+   var candidateList = await getCandidateList(roomNumber).call();
 
-  let roomName = await getRoomName(roomNumber).call();
-  $("#roomName").html(this.web3.utils.hexToAscii(roomName));
-
-  let candidateList = await getCandidateList(roomNumber).call();
-
-  for (var i = 1; i <= candidateList.length; i++) {
-    var name = this.web3.utils.hexToAscii(candidateList[i-1]);
-    var count = await totalVotesFor(roomNumber,candidateList[i-1]).call();
-    $("#candidate-" + i).html(name);
-    $("#totalVotes-" + i).html(count);
-  }
-
-
-
-
-  let voteDate = await getVoteDate(roomNumber).call();
-  $("#voteDate").html(this.web3.utils.hexToAscii(voteDate));
+   for (var i = 1; i <= candidateList.length; i++) {
+     var name = this.web3.utils.hexToAscii(candidateList[i-1]);
+     $("#candidate-" + i).html(name);
+    
+     var count = await totalVotesFor(roomNumber,candidateList[i-1]).call();
+     $("#totalVotes-" + i).html(count);
+   }
+   
+   $("#test2").html("State 2 : loadCandidatesAndVotes finished.");
  },
 
  voteForCandidate: async function() {
-  let candidateName = $("#candidate").val();
-  $("#msg").html("Vote has been submitted. The vote count will increment as soon as the vote is recorded on the blockchain. Please wait.")
+  const { totalVotesFor, voteForCandidate } = this.voting.methods;
+  var candidateName = $("#candidate").val();
+  $("#test3").html("State 3 : voteForCandidate start.");
   $("#candidate").val("");
 
-  const { totalVotesFor, voteForCandidate } = this.voting.methods;
+  await voteForCandidate(roomNumber,this.web3.utils.asciiToHex(candidateName)).send({gas: 600000, from: this.account});
 
-  let roomName = this.web3.utils.asciiToHex("Room1");
-  await voteForCandidate(roomNumber,this.web3.utils.asciiToHex(candidateName)).send({gas: 140000, from: this.account});
-  let div_id = candidates[candidateName];
- 
-  var count = await totalVotesFor(roomNumber,this.web3.utils.asciiToHex(candidateName)).call();
-  $("#" + div_id).html(count);
-  $("#msg").html("");
+  this.loadCandidatesAndVotes();
+
+  $("#test3").html("State 3 : voteForCandidate finished.");
  }  
+
 };
 
 window.App = App;
