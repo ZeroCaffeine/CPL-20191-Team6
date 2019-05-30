@@ -1,45 +1,43 @@
-// 스마트 컨트랙트 코드부분
-
 pragma solidity >=0.4.0 <0.6.0;
+// This line says the code will compile with version greater than 0.4 and less than 0.6
 
 contract Voting {
+  // constructor to initialize candidates
+  // vote for candidates
+  // get count of votes for each candidates
   
-  // 후보자 명단
-  bytes32[] public candidateList;
-  // 후보자 명단과 투표 수 정보를 매핑
-  mapping (bytes32 => uint8) public votesReceived;
+  struct voteRoom {
+    bytes32 roomName;
+    bytes32[] candidateList;
+    mapping (bytes32 => uint8) votesReceived;
+    bool exists;
+  }
 
-  // 후보자 등록 함수
-  // 생성자가 함수를 대신한다.
-  constructor(bytes32[] memory candidateNames) public {
-    candidateList = candidateNames;
+  uint8 roomCount = 0;
+  mapping (uint8 => voteRoom) voteRoomList;
+
+  function addVoteRoom(bytes32 _roomName, bytes32[] memory _candidateList) public {
+        uint8 index = ++roomCount;
+		
+		voteRoomList[index].roomName = _roomName;
+        voteRoomList[index].candidateList = _candidateList;
+        for (uint i = 0; i < _candidateList.length; i++) {
+            voteRoomList[index].votesReceived[_candidateList[i]] = 0;
+        }
+        voteRoomList[index].exists = true;
+  }
+
+  function voteForCandidate(uint8 roomNumber, bytes32 candidate) public {
+    // 1. check is room exists
+    //require(voteRoomList[roomNumber].exists);
+    // 2. check is candidate exists in the room
+    //require(validCandidate(roomNumber, candidate));
+    // 3. plus 1 to the room's candidate
+    voteRoomList[roomNumber].votesReceived[candidate] += 1;
   }
   
-  // 투표 기능 함수
-  function voteForCandidate(bytes32 candidate) public {
-    // 정상적인 후보자 입력을 검사 
-    require(validCandidate(candidate));
-    // 후보자 정보에 투표 수를 1 올린다.
-    votesReceived[candidate] += 1;
+  function totalVotesFor(uint8 roomNumber, bytes32 candidate) view public returns(uint8) {
+    //require(validCandidate(roomNumber, candidate));
+    return voteRoomList[roomNumber].votesReceived[candidate];
   }
-  
-  // 후보자 투표 수 산출 함수 
-  function totalVotesFor(bytes32 candidate) view public returns(uint8) {
-    // 정상적인 후보자 입력을 검사 
-    require(validCandidate(candidate));
-    // 투표 수 반환
-    return votesReceived[candidate];
-  }
-  
-  // 후보자 여부 검사 함수
-  // 정상적인 후보자(현재 이름) 정보를 명단과 대조한다.
-  function validCandidate(bytes32 candidate) view public returns (bool) {
-    for(uint i=0; i < candidateList.length; i++) {
-      if (candidateList[i] == candidate) {
-        return true;
-      }
-    }
-    return false;
-  }
-  
 }

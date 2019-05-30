@@ -1,40 +1,114 @@
-//Dapp 프로토타입 백엔드 
+import Web3 from "web3";
+import votingArtifact from "../../build/contracts/Voting.json";
 
-web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
-var account;
-web3.eth.getAccounts().then((f) => {
- account = f[0];
-})
+let candidates = {"Rama": "candidate-1", "Nick": "candidate-2", "Jose": "candidate-3"}
 
-abi = JSON.parse('[{"constant":true,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"totalVotesFor","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"validCandidate","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"votesReceived","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"candidateList","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"voteForCandidate","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"candidateNames","type":"bytes32[]"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]')
+const App = {
+ web3: null,
+ account: null,
+ voting: null,
 
-contract = new web3.eth.Contract(abi);
-// deployedContract.options.address 를 삽입한다.
-contract.options.address = "이 부분에는 Dapp 사용자의 contract address 를 삽입";
+ start: async function() {
+  const { web3 } = this;
 
+  try {
+   // get contract instance
+   const networkId = await web3.eth.net.getId();
+   const deployedNetwork = votingArtifact.networks[networkId];
+   this.voting = new web3.eth.Contract(
+    votingArtifact.abi,
+    deployedNetwork.address,
+   );
 
-candidates = {"후보자1": "candidate-1", "후보자2": "candidate-2", "후보자3": "candidate-3"}
+   // get accounts
+   const accounts = await web3.eth.getAccounts();
+   this.account = accounts[0];
+   
+   //this.test();
+   this.createVoteRoom();
+   this.loadCandidatesAndVotes();
+  } catch (error) {
+   console.error("Could not connect to contract or chain.");
+  }
+ },
 
-function voteForCandidate(candidate) {
- candidateName = $("#candidate").val();
- console.log(candidateName);
+ test: async function() {
+   let candidateNames = Object.keys(candidates);
+  for (var i = 0; i < candidateNames.length; i++) {
+   let name = candidateNames[i];
+   var count = i;
+   $("#" + candidates[name]).html(count);
+  }
+ },
 
- contract.methods.voteForCandidate(web3.utils.asciiToHex(candidateName)).send({from: account}).then((f) => {
+ createVoteRoom: async function() {
+   const { addVoteRoom } = this.voting.methods;
+   let candidateNames = Object.keys(candidates);
+   let candidateList = new Array();
+   for (var i = 0; i < candidateNames.length; i++) {
+     candidateList[i] = this.web3.utils.asciiToHex(candidateNames[i]);
+   }
+
+   let roomName = this.web3.utils.asciiToHex("Room1");  
+   //var check = await addVoteRoom(roomName,candidateList).call();
+   var check = await addVoteRoom(roomName,candidateList).send({gas: 240000, from: this.account});
+   if (check == true) {
+     $("#transaction-test").html("Transaction is submitted. Just wait."); 
+   } else {
+     $("#transaction-test").html("Transaction is failed."); 
+   }   
+  },
+
+ loadCandidatesAndVotes: async function() {
+  // The line below loads the totalVotesFor method from the list of methods 
+// returned by this.voting.methods
+  const { totalVotesFor } = this.voting.methods;
+  let candidateNames = Object.keys(candidates);
+  let roomName = this.web3.utils.asciiToHex("Room1");
+  for (var i = 0; i < candidateNames.length; i++) {
+   let name = candidateNames[i];
+   
+   var count = await totalVotesFor(1,this.web3.utils.asciiToHex(name)).call();
+   $("#" + candidates[name]).html(count);
+  }
+ },
+
+ voteForCandidate: async function() {
+  let candidateName = $("#candidate").val();
+  $("#msg").html("Vote has been submitted. The vote count will increment as soon as the vote is recorded on the blockchain. Please wait.")
+  $("#candidate").val("");
+
+  const { totalVotesFor, voteForCandidate } = this.voting.methods;
+
+  let roomName = this.web3.utils.asciiToHex("Room1");
+  await voteForCandidate(1,this.web3.utils.asciiToHex(candidateName)).send({gas: 140000, from: this.account});
   let div_id = candidates[candidateName];
-  contract.methods.totalVotesFor(web3.utils.asciiToHex(candidateName)).call().then((f) => {
-   $("#" + div_id).html(f);
-  })
- })
-}
+ 
+  var count = await totalVotesFor(1,this.web3.utils.asciiToHex(candidateName)).call();
+  $("#" + div_id).html(count);
+  $("#msg").html("");
+ }  
+};
 
-$(document).ready(function() {
- candidateNames = Object.keys(candidates);
+window.App = App;
 
- for(var i=0; i<candidateNames.length; i++) {
- let name = candidateNames[i];
-  
- contract.methods.totalVotesFor(web3.utils.asciiToHex(name)).call().then((f) => {
-  $("#" + candidates[name]).html(f);
- })
+window.addEventListener("load", function() {
+ if (window.ethereum) {
+  $("#" + candidates[name]).html("Ropsten");
+  // use MetaMask's provider
+  App.web3 = new Web3(window.ethereum);
+  window.ethereum.enable(); // get permission to access accounts
+ } else {
+  $("#" + candidates[name]).html("Not working");
+  console.warn(
+   "No web3 detected. Falling back to http://127.0.0.1:8545. You should remove this fallback when you deploy live",
+  );
+  // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
+  App.web3 = new Web3(
+   new Web3.providers.HttpProvider("http://127.0.0.1:8545"),
+  );
  }
+
+ App.start();
 });
+
