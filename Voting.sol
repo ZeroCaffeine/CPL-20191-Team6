@@ -10,13 +10,14 @@ contract Voting {
     bytes32 roomName;
     bytes32[] candidateList;
     mapping (bytes32 => uint8) votesReceived;
+	bytes32 voteDate;
     bool exists;
   }
 
   uint8 roomCount = 0;
   mapping (uint8 => voteRoom) voteRoomList;
 
-  function addVoteRoom(bytes32 _roomName, bytes32[] memory _candidateList) public {
+  function addVoteRoom(bytes32 _roomName, bytes32[] memory _candidateList, bytes32 _voteDate) public {
         uint8 index = ++roomCount;
 		
 		voteRoomList[index].roomName = _roomName;
@@ -24,6 +25,7 @@ contract Voting {
         for (uint i = 0; i < _candidateList.length; i++) {
             voteRoomList[index].votesReceived[_candidateList[i]] = 0;
         }
+		voteRoomList[index].voteDate = _voteDate;
         voteRoomList[index].exists = true;
   }
 
