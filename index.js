@@ -50,13 +50,9 @@ const App = {
    }
 
    let roomName = this.web3.utils.asciiToHex("Room1");  
-   //var check = await addVoteRoom(roomName,candidateList).call();
-   var check = await addVoteRoom(roomName,candidateList).send({gas: 240000, from: this.account});
-   if (check == true) {
-     $("#transaction-test").html("Transaction is submitted. Just wait."); 
-   } else {
-     $("#transaction-test").html("Transaction is failed."); 
-   }   
+   var voteDate = this.web3.utils.asciiToHex("0530");
+   await addVoteRoom(roomName,candidateList,voteDate).send({gas: 240000, from: this.account});
+ 
   },
 
  loadCandidatesAndVotes: async function() {
