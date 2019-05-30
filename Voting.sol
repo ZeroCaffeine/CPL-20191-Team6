@@ -31,6 +31,14 @@ contract Voting {
 	return voteRoomList[roomNumber].roomName;
   }
 
+  function getCandidateList(uint8 roomNumber) view public returns(bytes32[] memory) {
+	return voteRoomList[roomNumber].candidateList;
+  }
+
+  function getVoteDate(uint8 roomNumber) view public returns(bytes32) {
+	return voteRoomList[roomNumber].voteDate;
+  }
+
   function voteForCandidate(uint8 roomNumber, bytes32 candidate) public {
     // 1. check is room exists
     //require(voteRoomList[roomNumber].exists);
