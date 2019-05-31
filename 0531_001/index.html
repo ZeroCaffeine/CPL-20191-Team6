@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+ <title>Hello World DApp</title>
+ <link href='https://fonts.googleapis.com/css?family=Open Sans:400,700' rel='stylesheet' type='text/css'>
+ <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+</head>
+<body class="container">
+ <h3 id="roomName">Room name : </h3>
+ <h4 id="voteDate">Vote Date : </h4>
+ <h4 id="roomCount">Room count : </h4>
+ <div class="table-responsive">
+  <table class="table table-bordered">
+   <thead>
+    <tr>
+     <th>Candidate</th>
+     <th>Votes</th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr>
+     <td id="candidate-1"></td>
+     <td id="totalVotes-1"></td>
+    </tr>
+    <tr>
+     <td id="candidate-2"></td>
+     <td id="totalVotes-2"></td> 
+	</tr>
+    <tr>
+     <td id="candidate-3"></td>
+     <td id="totalVotes-3"></td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+ <a href="#" onclick="App.createVoteRoom()" class="btn btn-primary">Create</a>
+ <a href="#" onclick="App.loadRoomData()" class="btn btn-primary">Load</a>
+ <br>
+ <hr>
+ <input type="text" id="candidate" />
+<a href="#" onclick="App.voteForCandidate()" class="btn btn-primary">Vote</a>
+ <h6 id="test1">State 1 : </h6>
+ <h6 id="test2">State 2 : </h6>
+ <h6 id="test3">State 3 : </h6>
+ <h6 id="loadRoomName"></h6>
+ <h6 id="loadVoteDate"></h6>
+ <h6 id="loadCandidatesAndVotes"></h6>
+
+  </body>
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.37/dist/web3.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+<script src="./index.js"></script>
+</html>
